@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 
 const CustomerRecords = () => {
-
     const data = [
         { id: 1, name: "Bob Smith", email: "bob@email.com", password: "supersecure!" },
         { id: 2, name: "Jason Bell", email: "jayjay@email.com", password: "123pass" },
@@ -19,51 +18,34 @@ const CustomerRecords = () => {
 
     ];
 
+    const [fetchedData, setFetchedData] = useState([]); // use [] to make it wait for data to be fetched
     const [selectedRecord, setSelectedRecord] = useState({});
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_CUSTOMERS_API_URL}`)
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+            console.log(data);
+            setFetchedData(data);
+        });
+    }, [])
 
     function handleClickRow(item){    
         // if record is already selected, then unselect it
-        if(item.id == selectedRecord.id){
+        if(item.uid == selectedRecord.uid){
             setSelectedRecord({});
         }else{
             setSelectedRecord(item);
         }
     }
 
-
-    const [searched, setSearched] = useState("");
-    const [filteredData, setFilteredData] = useState(data)
-
-
-
-    //   useEffect(() => {
-    //     console.log(selectedRecord);
-    //     }, [selectedRecord])
-
-
     return (
         <>
             <h1 style={{textAlign:"center"}}>Customer Records</h1>
 
-            {/* List of records */}
-            {/* <table>
-                <tr key={"header"}>
-                    {Object.keys(state[0]).map((key) => (
-                    <th>{key}</th>
-                    ))}
-                </tr>
-                {state.map((item) => (
-                    <tr key={item.id}>
-                    {Object.values(item).map((val) => (
-                        <td key={""}>{val}</td>
-                    ))}
-                    </tr>
-                ))}
-            </table> */}
-
             <Paper>
-                
-
                 {/* <TableContainer */}
                     <Table size="small" aria-label="simple table">
                         <TableHead>
@@ -75,24 +57,24 @@ const CustomerRecords = () => {
                         </TableHead>
 
                         <TableBody>
-                        {filteredData.map((item) => (
+                        {fetchedData.map((item) => (
                             <TableRow
-                            key={item.id}
+                            key={item.name}
                             onClick={() => handleClickRow(item)}
                             >
                             <TableCell component="th" scope="row">
                                 {
-                                    item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.name}</p> : <p>{item.name}</p>
+                                    item.uid==selectedRecord.uid ? <p style={{fontWeight:"bold"}}>{item.name}</p> : <p>{item.name}</p>
                                 }
                             </TableCell>
                             <TableCell>
                                 {
-                                    item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.email}</p> : <p>{item.email}</p>
+                                    item.uid==selectedRecord.uid ? <p style={{fontWeight:"bold"}}>{item.email}</p> : <p>{item.email}</p>
                                 }
                             </TableCell>
                             <TableCell>
                                 {
-                                    item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.password}</p> : <p>{item.password}</p>
+                                    item.uid==selectedRecord.uid ? <p style={{fontWeight:"bold"}}>{item.password}</p> : <p>{item.password}</p>
                                 }
                             </TableCell>
                             </TableRow>
@@ -100,17 +82,8 @@ const CustomerRecords = () => {
                         </TableBody>
 
                     </Table>
-                {/* </TableContainer> */}
-
-
-
-
-
-     
-
-            
+                {/* </TableContainer> */}     
             </Paper>
-
 
             <Button 
                 variant="outlined" 
@@ -131,8 +104,6 @@ const CustomerRecords = () => {
                         Update
                     </Link>
             </Button>
-            
-            {/* <button disabled={Object.keys(selectedRecord).length==0}>Update</button> */}
         </>
     )
     
