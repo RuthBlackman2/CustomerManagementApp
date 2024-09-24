@@ -10,8 +10,6 @@ import Paper from '@mui/material/Paper';
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 
-
-
 const CustomerRecords = () => {
 
     const data = [
@@ -32,14 +30,20 @@ const CustomerRecords = () => {
         }
     }
 
-    useEffect(() => {
-    console.log(selectedRecord);
-    }, [selectedRecord])
+
+    const [searched, setSearched] = useState("");
+    const [filteredData, setFilteredData] = useState(data)
+
+
+
+    //   useEffect(() => {
+    //     console.log(selectedRecord);
+    //     }, [selectedRecord])
 
 
     return (
         <>
-            <h1>Customer Records</h1>
+            <h1 style={{textAlign:"center"}}>Customer Records</h1>
 
             {/* List of records */}
             {/* <table>
@@ -57,50 +61,61 @@ const CustomerRecords = () => {
                 ))}
             </table> */}
 
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 200 }} size="small" aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell >Name</TableCell>
-                        <TableCell>Email</TableCell>
-                        <TableCell>Password</TableCell>
-                    </TableRow>
-                    </TableHead>
+            <Paper>
+                
 
-                    <TableBody>
-                    {data.map((item) => (
-                        <TableRow
-                        key={item.id}
-                        onClick={() => handleClickRow(item)}
-                        >
-                        <TableCell component="th" scope="row">
-                            {
-                                item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.name}</p> : <p>{item.name}</p>
-                            }
-                        </TableCell>
-                        <TableCell>
-                            {
-                                item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.email}</p> : <p>{item.email}</p>
-                            }
-                        </TableCell>
-                        <TableCell>
-                            {
-                                item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.password}</p> : <p>{item.password}</p>
-                            }
-                        </TableCell>
+                {/* <TableContainer */}
+                    <Table size="small" aria-label="simple table">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell >Name</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Password</TableCell>
                         </TableRow>
-                    ))}
-                    </TableBody>
+                        </TableHead>
 
-                </Table>
-                </TableContainer>
+                        <TableBody>
+                        {filteredData.map((item) => (
+                            <TableRow
+                            key={item.id}
+                            onClick={() => handleClickRow(item)}
+                            >
+                            <TableCell component="th" scope="row">
+                                {
+                                    item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.name}</p> : <p>{item.name}</p>
+                                }
+                            </TableCell>
+                            <TableCell>
+                                {
+                                    item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.email}</p> : <p>{item.email}</p>
+                                }
+                            </TableCell>
+                            <TableCell>
+                                {
+                                    item.id==selectedRecord.id ? <p style={{fontWeight:"bold"}}>{item.password}</p> : <p>{item.password}</p>
+                                }
+                            </TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
 
+                    </Table>
+                {/* </TableContainer> */}
+
+
+
+
+
+     
+
+            
+            </Paper>
 
 
             <Button 
                 variant="outlined" 
                 color="secondary" 
-                >
+                disabled={Object.keys(selectedRecord).length!=0}>
                     <Link style={{textDecoration:"none", color:"inherit"}} to="/edit" state={{selectedRecord}}>
                         Add
                     </Link>
@@ -116,10 +131,6 @@ const CustomerRecords = () => {
                         Update
                     </Link>
             </Button>
-
-     
-
-            
             
             {/* <button disabled={Object.keys(selectedRecord).length==0}>Update</button> */}
         </>
