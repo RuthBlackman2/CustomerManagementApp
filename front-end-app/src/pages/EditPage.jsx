@@ -1,27 +1,35 @@
 import { TextField, Button, Container, Stack, Box, Snackbar, Alert } from '@mui/material';
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useLocation } from 'react-router-dom';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 
 const EditPage = () => {
-    let navigate = useNavigate(); 
+    // let navigate = useNavigate(); 
 
     const location = useLocation();
-    //console.log(location); 
-    //console.log(location.state);
-
-    const record = location.state.selectedRecord;
-    const mode = Object.keys(record).length==0 ? 'add' : 'edit';
-    const heading = mode === 'add' ? 'Add a new record' : 'Edit an existing record';
-
-    const [name, setName] = useState(mode == 'add' ? '' : record.name);
-    const [email, setEmail] = useState(mode == 'add' ? '' : record.email);
-    const [password, setPassword] = useState(mode == 'add' ? '' : record.password);
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("success")
+
+    const [record, setRecord] = useState([])
+    const [mode, setMode] = useState([])
+    const [heading, setHeading] = useState([])
+    const [name, setName] = useState([]);
+    const [email, setEmail] = useState([]);
+    const [password, setPassword] = useState([]);
+
+    useEffect(() => {
+        let currentRecord  = location.state.selectedRecord;
+        setRecord(currentRecord);
+        let currentMode = Object.keys(currentRecord).length==0 ? 'add' : 'edit';
+        setMode(currentMode);
+        setHeading(currentMode === 'add' ? 'Add a new record' : 'Update an existing record');
+        setName(currentMode == 'add' ? '' : currentRecord.name);
+        setEmail(currentMode == 'add' ? '' : currentRecord.email);
+        setPassword(currentMode == 'add' ? '' : currentRecord.password);
+    }, [])
 
     const showSnackbar = (message, severity) =>{
         setOpenSnackbar(true);
@@ -64,10 +72,22 @@ const EditPage = () => {
 
             const data = await response.json()
             const newId= data.message.match(/\d+/)[0];
-            // console.log(data)
            
             // show success message
             showSnackbar("User created successfully!", "success");
+
+            // set record to be new object
+            let newRecord = {uid: newId, name: `${name}`, email: `${email}`, password: `${password}`}
+            setRecord(newRecord);
+
+            // set mode to be edit
+            let newMode = Object.keys(newRecord).length==0 ? 'add' : 'edit';
+            setMode(newMode);
+
+            // update heading
+            setHeading(newMode === 'add' ? 'Add a new record' : 'Update an existing record');
+
+
         } catch (error){
             console.error(error)
 
@@ -91,9 +111,6 @@ const EditPage = () => {
                 throw new Error(`${response.status} ${response.statusText}`)
             }
 
-            const data = await response.json()
-            // console.log(data)
-
             // show success message
             showSnackbar("User modified successfully!", "success");
         } catch (error){
@@ -116,9 +133,6 @@ const EditPage = () => {
             if(!response.ok){
                 throw new Error(`${response.status} ${response.statusText}`)
             }
-
-            const data = await response.json()
-            // console.log(data)
 
             // show success message
             showSnackbar("User deleted successfully!", "success");
