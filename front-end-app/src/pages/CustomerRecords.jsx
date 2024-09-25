@@ -11,12 +11,12 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 
 const CustomerRecords = () => {
-    const data = [
-        { id: 1, name: "Bob Smith", email: "bob@email.com", password: "supersecure!" },
-        { id: 2, name: "Jason Bell", email: "jayjay@email.com", password: "123pass" },
-        { id: 3, name: "Tyrome Dave", email: "td@email.com", password: "pass1" },
+    // const data = [
+    //     { id: 1, name: "Bob Smith", email: "bob@email.com", password: "supersecure!" },
+    //     { id: 2, name: "Jason Bell", email: "jayjay@email.com", password: "123pass" },
+    //     { id: 3, name: "Tyrome Dave", email: "td@email.com", password: "pass1" },
 
-    ];
+    // ];
 
     const [fetchedData, setFetchedData] = useState([]); // use [] to make it wait for data to be fetched
     const [selectedRecord, setSelectedRecord] = useState({});

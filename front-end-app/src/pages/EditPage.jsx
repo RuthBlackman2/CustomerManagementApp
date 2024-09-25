@@ -1,10 +1,12 @@
-import { TextField, Button, Container, Stack, Box } from '@mui/material';
-import { Link } from "react-router-dom"
+import { TextField, Button, Container, Stack, Box, Snackbar, Alert } from '@mui/material';
+import { Link, useNavigate } from "react-router-dom"
 import { useLocation } from 'react-router-dom';
 import React, {useState} from "react";
 
 
 const EditPage = () => {
+    let navigate = useNavigate(); 
+
     const location = useLocation();
     //console.log(location); 
     //console.log(location.state);
@@ -17,16 +19,123 @@ const EditPage = () => {
     const [email, setEmail] = useState(mode == 'add' ? '' : record.email);
     const [password, setPassword] = useState(mode == 'add' ? '' : record.password);
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState("success")
+
+    const showSnackbar = (message, severity) =>{
+        setOpenSnackbar(true);
+        setSnackbarMessage(message);
+        setSnackbarSeverity(severity);
+    }
+
+    const resetFields = () => {
+        setName('');
+        setEmail('');
+        setPassword('');
+    };
+
     function handleSubmit(event){   
         event.preventDefault()
-        console.log(name, email, password);
+
+        if(mode == 'add'){
+            // add new account
+            createAccount();
+        }else {
+            // edit existing account
+            editAccount();
+        }
     }
 
-    function handleDelete(event){
-        console.log("delete ", record)
+    const createAccount = async () =>{
+        try{
+
+            const response = await fetch(`${import.meta.env.VITE_CUSTOMERS_API_URL}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({"name": `${name}`, "email": `${email}`, "password": `${password}`})
+            })
+
+            if(!response.ok){
+                throw new Error(`${response.status} ${response.statusText}`)
+            }
+
+            const data = await response.json()
+            const newId= data.message.match(/\d+/)[0];
+            // console.log(data)
+           
+            // show success message
+            showSnackbar("User created successfully!", "success");
+        } catch (error){
+            console.error(error)
+
+            // show error message
+            showSnackbar(`${error}`, "error");
+        }   
     }
 
+    const editAccount = async () => {
+        try{
 
+            const response = await fetch(`${import.meta.env.VITE_CUSTOMERS_API_URL}/${record.uid}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({"name": `${name}`, "email": `${email}`, "password": `${password}`})
+            })
+
+            if(!response.ok){
+                throw new Error(`${response.status} ${response.statusText}`)
+            }
+
+            const data = await response.json()
+            // console.log(data)
+
+            // show success message
+            showSnackbar("User modified successfully!", "success");
+        } catch (error){
+            console.error(error)
+
+            // show error message
+            showSnackbar(`${error}`, "error");
+        }   
+    }
+
+    const handleDelete = async (event) =>{
+        try{
+            const response = await fetch(`${import.meta.env.VITE_CUSTOMERS_API_URL}/${record.uid}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+
+            if(!response.ok){
+                throw new Error(`${response.status} ${response.statusText}`)
+            }
+
+            const data = await response.json()
+            // console.log(data)
+
+            // show success message
+            showSnackbar("User deleted successfully!", "success");
+
+            // reset fields in form
+            resetFields();
+        } catch (error){
+            console.error(error)
+
+            // show error message
+            showSnackbar(`${error}`, "error");
+        }
+    }
+
+    const handleClose = () => {
+        setOpenSnackbar(false);
+    };
 
     return (
         <>
@@ -36,14 +145,13 @@ const EditPage = () => {
             <Box
             component="form"  
             sx={{
-                width: '50%',  // Set width to 50%
-                margin: '0 auto',  // Center the form
-                display: 'flex',  // Use flexbox for vertical alignment
-                flexDirection: 'column',  // Align items in a column
-                alignItems: 'center',  // Center items horizontally
+                width: '50%',  
+                margin: '0 auto',  
+                display: 'flex',  
+                flexDirection: 'column', 
+                alignItems: 'center',  
                 padding: 2, 
                 borderColor: "primary", 
-             //   boxShadow: 1,  // Optional: add some shadow for visual appeal
             }}
             autoComplete="off"  
             onSubmit={handleSubmit}
@@ -85,7 +193,16 @@ const EditPage = () => {
             {/* </form> */}
             </Box>
             
-        
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    severity={snackbarSeverity}
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </>
     ) 
 };
