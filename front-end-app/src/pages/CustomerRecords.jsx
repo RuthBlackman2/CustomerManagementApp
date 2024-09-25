@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
+// import TableCell from '@mui/material/TableCell';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TableRow from '@mui/material/TableRow';
+// import Paper from '@mui/material/Paper';
 import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
+import { DataGrid } from '@mui/x-data-grid';
+import '../assets/styles.css';
 
 const CustomerRecords = () => {
-    // const data = [
-    //     { id: 1, name: "Bob Smith", email: "bob@email.com", password: "supersecure!" },
-    //     { id: 2, name: "Jason Bell", email: "jayjay@email.com", password: "123pass" },
-    //     { id: 3, name: "Tyrome Dave", email: "td@email.com", password: "pass1" },
-
-    // ];
+    const columns = [
+        { field: 'uid', headerName: 'ID', width: 110 },
+        { field: 'name', headerName: 'Name', width: 280,},
+        { field: 'email', headerName: 'Email', width: 280,},
+        { field: 'password', headerName: 'Password', width: 280,},
+      ];
 
     const [fetchedData, setFetchedData] = useState([]); // use [] to make it wait for data to be fetched
     const [selectedRecord, setSelectedRecord] = useState({});
@@ -34,10 +36,10 @@ const CustomerRecords = () => {
 
     function handleClickRow(item){    
         // if record is already selected, then unselect it
-        if(item.uid == selectedRecord.uid){
+        if(item.row.uid == selectedRecord.uid){
             setSelectedRecord({});
         }else{
-            setSelectedRecord(item);
+            setSelectedRecord(item.row);
         }
     }
 
@@ -45,65 +47,64 @@ const CustomerRecords = () => {
         <>
             <h1 style={{textAlign:"center"}}>Customer Records</h1>
 
-            <Paper>
-                {/* <TableContainer */}
-                    <Table size="small" aria-label="simple table">
-                        <TableHead>
-                        <TableRow>
-                            <TableCell >Name</TableCell>
-                            <TableCell>Email</TableCell>
-                            <TableCell>Password</TableCell>
-                        </TableRow>
-                        </TableHead>
+            <Box sx={{ 
+                height: 631,  
+                width: '50%',  
+                margin: '0 auto',    
+                padding: 2, 
+                borderColor: "primary",  
+                }}>
+                <DataGrid
+                    rows={fetchedData}
+                    getRowId={(row) => row.uid}
+                    columns={columns}
+                    onRowClick={(row) => handleClickRow(row)}
+                    getRowClassName={(params) =>
+                        params.row.uid == selectedRecord.uid ? 'selected-row' : ''
+                    }
+                    disableSelectionOnClick
+                    disableColumnResize
+                    hideFooterSelectedRowCount
+                    initialState={{
+                    pagination: {
+                        paginationModel: {
+                        pageSize: 10,
+                        },
+                    },
+                    }}
+                    pageSizeOptions={[10]}
+                />
+            </Box>
 
-                        <TableBody>
-                        {fetchedData.map((item) => (
-                            <TableRow
-                            key={item.uid}
-                            onClick={() => handleClickRow(item)}
-                            >
-                            <TableCell component="th" scope="row">
-                                {
-                                    item.uid==selectedRecord.uid ? <p style={{fontWeight:"bold"}}>{item.name}</p> : <p>{item.name}</p>
-                                }
-                            </TableCell>
-                            <TableCell>
-                                {
-                                    item.uid==selectedRecord.uid ? <p style={{fontWeight:"bold"}}>{item.email}</p> : <p>{item.email}</p>
-                                }
-                            </TableCell>
-                            <TableCell>
-                                {
-                                    item.uid==selectedRecord.uid ? <p style={{fontWeight:"bold"}}>{item.password}</p> : <p>{item.password}</p>
-                                }
-                            </TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
+            <Box
+            sx={{ 
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+                padding: 2, 
+                borderColor: "primary",  
+                }}>
+                <Button
+                    variant="outlined" 
+                    color="secondary" 
+                    disabled={Object.keys(selectedRecord).length!=0}>
+                        <Link style={{textDecoration:"none", color:"inherit"}} to="/edit" state={{selectedRecord}}>
+                            Add
+                        </Link>
+                </Button>
 
-                    </Table>
-                {/* </TableContainer> */}     
-            </Paper>
-
-            <Button 
-                variant="outlined" 
-                color="secondary" 
-                disabled={Object.keys(selectedRecord).length!=0}>
-                    <Link style={{textDecoration:"none", color:"inherit"}} to="/edit" state={{selectedRecord}}>
-                        Add
-                    </Link>
-            </Button>
-
-            <Button 
-                variant="outlined" 
-                color="secondary" 
-                disabled={Object.keys(selectedRecord).length==0}>
-                    <Link 
-                    style={{textDecoration:"none", color: Object.keys(selectedRecord).length === 0 ? 'grey' : 'inherit' }} 
-                    to="/edit" state={{selectedRecord}}>
-                        Update
-                    </Link>
-            </Button>
+                <Button 
+                    sx={{marginLeft: 5}}
+                    variant="outlined" 
+                    color="secondary" 
+                    disabled={Object.keys(selectedRecord).length==0}>
+                        <Link 
+                        style={{textDecoration:"none", color: Object.keys(selectedRecord).length === 0 ? 'grey' : 'inherit' }} 
+                        to="/edit" state={{selectedRecord}}>
+                            Update
+                        </Link>
+                </Button>
+            </Box>
         </>
     )
     

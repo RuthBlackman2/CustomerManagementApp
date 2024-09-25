@@ -1,0 +1,12 @@
+.MuiDataGrid-row.Mui-selected {
+    background-color: transparent !important; /* Remove blue background */
+  }
+  
+  .MuiDataGrid-row:hover {
+    background-color: transparent !important; /* Remove hover background */
+  }
+  
+  .selected-row {
+    font-weight: bold;
+    background-color: transparent !important; /* Maintain transparent background for selected row */
+  }
