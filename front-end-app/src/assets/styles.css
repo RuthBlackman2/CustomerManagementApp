@@ -1,12 +1,20 @@
 .MuiDataGrid-row.Mui-selected {
-    background-color: transparent !important; /* Remove blue background */
-  }
+    background-color: transparent !important; 
+}
   
-  .MuiDataGrid-row:hover {
-    background-color: transparent !important; /* Remove hover background */
-  }
+.MuiDataGrid-row:hover {
+    background-color: transparent !important; 
+}
+
+.MuiDataGrid-cell:focus {
+  outline: none !important;
+}
+
+.MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
   
-  .selected-row {
+.selected-row {
     font-weight: bold;
-    background-color: transparent !important; /* Maintain transparent background for selected row */
-  }
+    background-color: transparent !important; 
+}
