@@ -59,7 +59,7 @@ const CustomerRecords = () => {
                         <TableBody>
                         {fetchedData.map((item) => (
                             <TableRow
-                            key={item.name}
+                            key={item.uid}
                             onClick={() => handleClickRow(item)}
                             >
                             <TableCell component="th" scope="row">
