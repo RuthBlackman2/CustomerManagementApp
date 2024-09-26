@@ -106,28 +106,6 @@ describe("Customer Records Page", () => {
     })
 })
 
-
-
-// test('Data grid renders', async () => {
-//     render(
-//         <MemoryRouter initialEntries={[ '/' ]}>
-//         <MyRoutes/>
-//       </MemoryRouter>
-//       )
-//     // render(<App />);
-//     const gridElement = screen.getByRole('grid');
-//     expect(gridElement).toBeInTheDocument();
-// })
-
-
-
-
-
-
-
-
-
-
 describe("Add/Edit Form", () => {
     test("Clicking add navigates to edit page and form is empty", async () => {
 
