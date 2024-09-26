@@ -78,10 +78,11 @@ const CustomerRecords = () => {
                 borderColor: "primary",  
                 }}>
                 <Button
+                    
                     variant="outlined" 
                     color="secondary" 
                     disabled={Object.keys(selectedRecord).length!=0}>
-                        <Link style={{textDecoration:"none", color:"inherit"}} to="/edit" state={{selectedRecord}}>
+                        <Link data-testid='add_button' style={{textDecoration:"none", color:"inherit"}} to="/edit" state={{selectedRecord}}>
                             Add
                         </Link>
                 </Button>
@@ -92,6 +93,7 @@ const CustomerRecords = () => {
                     color="secondary" 
                     disabled={Object.keys(selectedRecord).length==0}>
                         <Link 
+                        data-testid='update_button'
                         style={{textDecoration:"none", color: Object.keys(selectedRecord).length === 0 ? 'grey' : 'inherit' }} 
                         to="/edit" state={{selectedRecord}}>
                             Update
