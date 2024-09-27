@@ -20,6 +20,8 @@ const EditPage = () => {
     const [email, setEmail] = useState([]);
     const [password, setPassword] = useState([]);
 
+    const [changed, setChanged] = useState(false);
+
     useEffect(() => {
         let currentRecord  = location.state.selectedRecord;
         setRecord(currentRecord);
@@ -51,7 +53,12 @@ const EditPage = () => {
             createAccount();
         }else {
             // edit existing account
-            editAccount();
+            if(changed){
+                editAccount();
+            }else{
+                showSnackbar("Fields haven't changed!", "error");
+            }
+            
         }
     }
 
@@ -87,7 +94,8 @@ const EditPage = () => {
             // update heading
             setHeading(newMode === 'add' ? 'Add a new record' : 'Update an existing record');
 
-
+            // set changed to false
+            setChanged(false);
         } catch (error){
             console.error(error)
 
@@ -113,6 +121,9 @@ const EditPage = () => {
 
             // show success message
             showSnackbar("User modified successfully!", "success");
+
+            // set changed to false
+            setChanged(false);
         } catch (error){
             console.error(error)
 
@@ -173,7 +184,9 @@ const EditPage = () => {
                 <h2>Form</h2>
                 <TextField
                     label="Name"
-                    onChange={e => setName(e.target.value)}
+                    onChange={e => {
+                        setName(e.target.value);
+                        setChanged(true)}}
                     variant="outlined"
                     color="secondary"
                     type="name"
@@ -184,7 +197,9 @@ const EditPage = () => {
 
                 <TextField
                     label="Email"
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => {
+                        setEmail(e.target.value);
+                        setChanged(true)}}
                     variant="outlined"
                     color="secondary"
                     type="email"
@@ -195,7 +210,9 @@ const EditPage = () => {
 
                 <TextField
                     label="Password"
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => {
+                        setPassword(e.target.value);
+                        setChanged(true)}}
                     variant="outlined"
                     color="secondary"
                     type="pwd"
