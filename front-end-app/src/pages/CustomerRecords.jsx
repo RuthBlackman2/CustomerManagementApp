@@ -22,7 +22,7 @@ const CustomerRecords = () => {
             return res.json();
         })
         .then((data) => {
-            console.log(data);
+            //console.log(data);
             setFetchedData(data);
         });
     }, [])
