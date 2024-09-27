@@ -179,6 +179,7 @@ const EditPage = () => {
                     type="name"
                     sx={{width:'75%', marginBottom: 2}}
                     value={name}
+                    required
                     />
 
                 <TextField
@@ -189,6 +190,7 @@ const EditPage = () => {
                     type="email"
                     sx={{width:'75%', marginBottom:2}}
                     value={email}
+                    required
                     />
 
                 <TextField
@@ -199,6 +201,7 @@ const EditPage = () => {
                     type="pwd"
                     sx={{width:'75%', marginBottom:2}}
                     value={password}
+                    required
                     />
 
                     <Button variant="outlined" color="secondary" type="submit" style={{marginBottom:10}}>Save</Button>
