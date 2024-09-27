@@ -219,8 +219,8 @@ const EditPage = () => {
                     required
                 />
 
-                <div class="pt-4 inline-grid grid-cols-3 gap-4">
-                    <button class="bg-green-300 hover:bg-green-400 text-green-800 font-bold py-2 px-4 rounded">
+                <div className="pt-4 inline-grid grid-cols-3 gap-4">
+                    <button className="bg-green-300 hover:bg-green-400 text-green-800 font-bold py-2 px-4 rounded">
                         Save
                     </button>
 

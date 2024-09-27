@@ -79,7 +79,7 @@ const CustomerRecords = () => {
                 borderColor: "primary",  
                 }}>
 
-                <div class="inline-grid grid-cols-2 gap-4">
+                <div className="inline-grid grid-cols-2 gap-4">
                     <Link 
                     data-testid='add_button'
                     to="/edit"
