@@ -182,6 +182,7 @@ const EditPage = () => {
 
                 <TextField
                     label="Name"
+                    data-testid="name_field"
                     onChange={e => {
                         setName(e.target.value);
                         setChanged(true)}}
@@ -195,6 +196,7 @@ const EditPage = () => {
 
                 <TextField
                     label="Email"
+                    data-testid="email_field"
                     onChange={e => {
                         setEmail(e.target.value);
                         setChanged(true)}}
@@ -208,6 +210,7 @@ const EditPage = () => {
 
                 <TextField
                     label="Password"
+                    data-testid="password_field"
                     onChange={e => {
                         setPassword(e.target.value);
                         setChanged(true)}}
@@ -220,11 +223,12 @@ const EditPage = () => {
                 />
 
                 <div className="pt-4 inline-grid grid-cols-3 gap-4">
-                    <button className="bg-green-300 hover:bg-green-400 text-green-800 font-bold py-2 px-4 rounded">
+                    <button data-testid="save_button" className="bg-green-300 hover:bg-green-400 text-green-800 font-bold py-2 px-4 rounded">
                         Save
                     </button>
 
                     <button 
+                    data-testid="delete_button"
                     disabled={mode === 'add'} 
                     onClick={handleDelete}  
                     className={mode === 'add'? "bg-gray-300  text-gray-800 font-bold py-2 px-4 rounded opacity-50" : "bg-red-300 hover:bg-red-400 text-red-800 font-bold py-2 px-4 rounded"}
@@ -232,7 +236,7 @@ const EditPage = () => {
                         Delete
                     </button>
 
-                    <Link to="/" className="bg-orange-300 hover:bg-orange-400 text-orange-800 font-bold py-2 px-4 rounded">
+                    <Link data-testid="cancel_button" to="/" className="bg-orange-300 hover:bg-orange-400 text-orange-800 font-bold py-2 px-4 rounded">
                         Cancel
                     </Link>
                 </div>
