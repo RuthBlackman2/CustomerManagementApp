@@ -31,7 +31,7 @@ Example Response (200 OK)
 ]
 ``````
 
-### Get a single customer
+### Get a customer
 * **GET** `/customers/:id` 
 
 Example Response (200 OK)
