@@ -1,12 +1,10 @@
-import { TextField, Button, Container, Stack, Box, Snackbar, Alert } from '@mui/material';
-import { useNavigate } from "react-router-dom"
+import { TextField, Box, Snackbar, Alert } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import React, {useEffect, useState} from "react";
+import { Link } from 'react-router-dom';
 
 
 const EditPage = () => {
-    // let navigate = useNavigate(); 
-
     const location = useLocation();
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -164,9 +162,8 @@ const EditPage = () => {
 
     return (
         <>
-            <h1 style={{textAlign: "center"}}>{heading}</h1>
+            <h1 className="text-3xl font-bold text-center text-blue-600">{heading}</h1>
 
-            {/* <form autoComplete="off" onSubmit={handleSubmit}> */}
             <Box
             component="form"  
             sx={{
@@ -181,7 +178,8 @@ const EditPage = () => {
             autoComplete="off"  
             onSubmit={handleSubmit}
             >
-                <h2>Form</h2>
+                <br/>
+
                 <TextField
                     label="Name"
                     onChange={e => {
@@ -219,12 +217,25 @@ const EditPage = () => {
                     sx={{width:'75%', marginBottom:2}}
                     value={password}
                     required
-                    />
+                />
 
-                    <Button variant="outlined" color="secondary" type="submit" style={{marginBottom:10}}>Save</Button>
-                    <Button variant="outlined" color="secondary" style={{marginBottom:10}} disabled={mode == 'add'? true : false} onClick={handleDelete}>Delete</Button>
-                    <Button variant="outlined" color="secondary" style={{marginBottom:10}} href="/">Cancel</Button>
-            {/* </form> */}
+                <div class="pt-4 inline-grid grid-cols-3 gap-4">
+                    <button class="bg-green-300 hover:bg-green-400 text-green-800 font-bold py-2 px-4 rounded">
+                        Save
+                    </button>
+
+                    <button 
+                    disabled={mode === 'add'} 
+                    onClick={handleDelete}  
+                    className={mode === 'add'? "bg-gray-300  text-gray-800 font-bold py-2 px-4 rounded opacity-50" : "bg-red-300 hover:bg-red-400 text-red-800 font-bold py-2 px-4 rounded"}
+                    >
+                        Delete
+                    </button>
+
+                    <Link to="/" className="bg-orange-300 hover:bg-orange-400 text-orange-800 font-bold py-2 px-4 rounded">
+                        Cancel
+                    </Link>
+                </div>
             </Box>
             
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>

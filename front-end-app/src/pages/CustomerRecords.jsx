@@ -38,7 +38,7 @@ const CustomerRecords = () => {
 
     return (
         <>
-            <h1 style={{textAlign:"center"}}>Customer Records</h1>
+            <h1 className="text-3xl font-bold text-center text-blue-600">Customer Records</h1>
 
             <Box sx={{ 
                 height: 631,  
@@ -46,7 +46,8 @@ const CustomerRecords = () => {
                 margin: '0 auto',    
                 padding: 2, 
                 borderColor: "primary",  
-                }}>
+                }}
+                >
                 <DataGrid
                     rows={fetchedData}
                     getRowId={(row) => row.uid}
@@ -77,28 +78,37 @@ const CustomerRecords = () => {
                 padding: 2, 
                 borderColor: "primary",  
                 }}>
-                <Button
-                    
-                    variant="outlined" 
-                    color="secondary" 
-                    disabled={Object.keys(selectedRecord).length!=0}>
-                        <Link data-testid='add_button' style={{textDecoration:"none", color:"inherit"}} to="/edit" state={{selectedRecord}}>
-                            Add
-                        </Link>
-                </Button>
 
-                <Button 
-                    sx={{marginLeft: 5}}
-                    variant="outlined" 
-                    color="secondary" 
-                    disabled={Object.keys(selectedRecord).length==0}>
-                        <Link 
-                        data-testid='update_button'
-                        style={{textDecoration:"none", color: Object.keys(selectedRecord).length === 0 ? 'grey' : 'inherit' }} 
-                        to="/edit" state={{selectedRecord}}>
-                            Update
-                        </Link>
-                </Button>
+                <div class="inline-grid grid-cols-2 gap-4">
+                    <Link 
+                    data-testid='add_button'
+                    to="/edit"
+                    state={{selectedRecord}}
+                    onClick={(e) => {
+                        if(Object.keys(selectedRecord).length!=0){
+                            e.preventDefault();
+                        }
+                    }}
+                    className={Object.keys(selectedRecord).length!=0? "pointer-events-none bg-gray-300  text-gray-800 font-bold py-2 px-4 rounded opacity-50 text-center" : "bg-blue-300 hover:bg-blue-400 text-blue-800 font-bold py-2 px-4 rounded text-center"}
+                    >
+                        Add
+                    </Link>
+
+                    <Link 
+                    data-testid='update_button'
+                    to="/edit"
+                    state={{selectedRecord}}
+                    onClick={(e) => {
+                        if(Object.keys(selectedRecord).length==0){
+                            e.preventDefault();
+                        }
+                    }}
+                    className={Object.keys(selectedRecord).length==0 ? "pointer-events-none bg-gray-300  text-gray-800 font-bold py-2 px-4 rounded opacity-50 text-center" : "bg-blue-300 hover:bg-blue-400 text-blue-800 font-bold py-2 px-4 rounded text-center"}
+                    >
+                        Update
+                    </Link>
+
+                </div>
             </Box>
         </>
     )
